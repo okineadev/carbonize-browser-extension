@@ -1,0 +1,25 @@
+{
+  "dependencies": {},
+  "devDependencies": {
+    "@biomejs/biome": "^1.8.3",
+    "@types/bun": "latest",
+    "@types/chrome": "^0.0.268",
+    "esbuild": "^0.23.0",
+    "typescript": "^5.5.3"
+  },
+  "description": "Create Carbon screenshots of selected code",
+  "private": "true",
+  "license": "MIT",
+  "author": {
+    "name": "Okinea Dev",
+    "url": "https://github.com/okineadev"
+  },
+  "main": "carbon.js",
+  "name": "carbonize-browser-extension",
+  "scripts": {
+    "build": "bun run ./scripts/build.js",
+    "watch": "bun run ./scripts/watch.js",
+    "lint": "biome check --write ./src",
+    "format": "biome format --write ./src"
+  }
+}
