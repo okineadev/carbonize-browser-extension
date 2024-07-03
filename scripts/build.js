@@ -3,18 +3,19 @@ import config from "./esbuild.config.js";
 import fs from "node:fs";
 import path from "node:path";
 
-const distDir = path.join(process.cwd(), "dist");
+const baseDistDir = path.join(process.cwd(), 'dist');
+const distDir = path.join(baseDistDir, 'chrome-extension');
 
-if (fs.existsSync(distDir)) {
-	try {
-		fs.rmSync(distDir, { recursive: true });
-	} catch (err) {
-		console.error(`Error while deleting ${distDir}.`, err);
-	}
+if (fs.existsSync(baseDistDir)) {
+  try {
+    fs.rmSync(baseDistDir, { recursive: true });
+  } catch (err) {
+    console.error(`Error while deleting ${distDir}.`, err);
+  }
 }
 
 // Створення папки dist
-fs.mkdirSync(distDir, { recursive: true });
+fs.mkdirSync(baseDistDir, { recursive: true });
 
 // Копіювання файлу manifest.json у папку dist
 const srcManifest = path.join(process.cwd(), "src", "manifest.json");

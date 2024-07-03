@@ -4,8 +4,8 @@ const config: BuildOptions = {
     entryPoints: ["./src/*.ts"],
     bundle: true,
     minify: true,
-    target: 'chrome87',
-    outdir: './dist'
+    target: "chrome87",
+    outdir: "./dist/chrome-extension",
 };
 
 export default config;
