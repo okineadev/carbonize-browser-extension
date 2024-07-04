@@ -1,0 +1,68 @@
+name: Release new version
+
+on:
+  release:
+    types:
+      - published
+
+permissions:
+  id-token: write
+  attestations: write
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+
+    env:
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+    steps:
+      - name: 🏷️ Check tag name
+        run: |
+          tag="${{ github.ref_name }}"
+          echo "$tag" | grep -Pq "^v\d+\.\d+\.\d+$" || (echo "::error::Tag name '$tag' does not correct." && exit 1)
+
+      - name: 📥 Clone repository
+        uses: actions/checkout@v4.1.5
+
+      - name: 🛠️ Setup Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+
+      - name: ⚙️ Install dependencies
+        run: bun install
+
+      - name: ♻️ Build & release
+        run: bun run release $(echo "${{ github.ref_name }}" | grep -Pq "^v\d+\.\d+\.\d+$")
+
+      - name: Commit updated files
+        uses: EndBug/add-and-commit@v7
+        with:
+          add: "."
+          message: "[auto] release  ${{env.package_version}}"
+          tag: "${{env.package_version}}"
+
+      - name: ✅ Attest artifacts
+        uses: actions/attest-build-provenance@v1.1.2
+        # Read: https://docs.github.com/en/actions/security-guides/using-artifact-attestations-to-establish-provenance-for-builds
+        with:
+          subject-path: |
+            dist/carbonize-chrome-extension-*.zip
+
+      - name: 📦 Append files to release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: "dist/carbonize-chrome-extension-*.zip"
+
+    #   - name: 🛍️ Publish extension to Chrome Web Store
+    #     uses: trmcnvn/chrome-addon@v2
+    #     with:
+    #       # extension is only necessary when updating an existing addon,
+    #       # omitting it will create a new addon
+    #       extension: abcdefg
+    #       zip: dist/carbonize-chrome-extension-*.zip
+    #       client-id: ${{ secrets.CHROME_CLIENT_ID }}
+    #       client-secret: ${{ secrets.CHROME_CLIENT_SECRET }}
+    #       refresh-token: ${{ secrets.CHROME_REFRESH_TOKEN }}

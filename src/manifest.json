@@ -3,7 +3,10 @@
   "name": "Carbonize Code",
   "version": "0.0.1",
   "description": "Create Carbon screenshots of selected code",
-  "permissions": ["contextMenus", "tabs"],
+  "permissions": [
+    "contextMenus",
+    "tabs"
+  ],
   "background": {
     "service_worker": "carbon.js"
   },
@@ -18,8 +21,12 @@
   },
   "content_scripts": [
     {
-      "matches": ["<all_urls>"],
-      "js": ["content.js"]
+      "matches": [
+        "<all_urls>"
+      ],
+      "js": [
+        "content.js"
+      ]
     }
   ],
   "icons": {
