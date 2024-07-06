@@ -1,0 +1,36 @@
+// For format details, see https://aka.ms/devcontainer.json. For config options, see the
+// README at: https://github.com/devcontainers/templates/tree/main/src/ubuntu
+{
+  "name": "carbonize-browser-extension",
+  // Use Microsoft's Ubuntu Base image for the dev container
+  "image": "mcr.microsoft.com/devcontainers/base:jammy",
+
+  // Features to add to the dev container. More info: https://containers.dev/features.
+  "features": {
+    "ghcr.io/michidk/devcontainers-features/bun:1": {}
+  },
+
+  "privileged": true,
+
+  "postCreateCommand": {
+    // Install dependencies in the dev container
+    "install-bun-packages": "bun install"
+  },
+
+  "customizations": {
+    "vscode": {
+      "settings": {
+        // Define suggested settings for the dev container
+        "resmon.show.battery": false,
+        "resmon.show.cpufreq": false
+      },
+      "extensions": [
+        "biomejs.biome",
+        "davidanson.vscode-markdownlint",
+        "oven.bun-vscode",
+        "redhat.vscode-yaml",
+        "docsmsft.docs-yaml"
+      ]
+    }
+  }
+}
